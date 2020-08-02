@@ -1,1 +1,9 @@
-language: javascript
+language: node_js
+node_js:
+  - 14.5.0
+branches:
+  only:
+    - master
+matrix:
+  allow_failures:
+    - node_js: 14.5.0
