@@ -1,5 +1,3 @@
-/* Source: https://github.com/smile2468/PM2-Manager/blob/master/src/utils/logger.js */
-
 const winston = require("winston"),
     moment = require("moment-timezone");
 const { Message } = require("discord.js");
@@ -44,7 +42,5 @@ class Logger {
         return msg
     }
 }
-
-/* Source: https://github.com/smile2468/PM2-Manager/blob/master/src/utils/logger.js */
 
 module.exports = Logger;

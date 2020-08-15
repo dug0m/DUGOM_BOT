@@ -26,6 +26,7 @@ module.exports = class PlayCommand extends Command {
 
     async run(message, { query }) {
         const { channel } = message.member.voice;
+        if (!channel) return message.channel.send(new MessageEmbed().setDescription(`❗ **음성채널에 먼저 접속하세요.**`).setColor(0xFF0000));
 
         const spawn = this.client.music.players.spawn({
             guild: message.guild,
@@ -36,7 +37,9 @@ module.exports = class PlayCommand extends Command {
         this.client.music.players.set(message.guild.id, spawn);
 
         const player = this.client.music.players.get(message.guild.id);
-        if (player && channel) {
+        if (!player) return message.channel.send(new MessageEmbed().setDescription(`❗ **이 서버의 플레이어 정보를 가져올 수 없어요.**`).setColor(0xFF0000))
+
+        try {
             if (player.voiceChannel.id === channel.id) {
                 let i = 0;
 
@@ -48,7 +51,7 @@ module.exports = class PlayCommand extends Command {
                     .setAuthor("💿 음악 선택 | 원하는 곡의 번호를 입력 후 '완료'를 입력하세요.")
                     .setDescription(tracksInfo)
                     .setColor("#739cde")
-                    .setFooter(`팁: 30초 제한 | "전체" 를 입력하면 1 ~ 10번 모든 곡을 대기열에 추가합니다.`);
+                    .setFooter(`팁: 15초 제한 | "전체" 를 입력하면 1 ~ 10번 모든 곡을 대기열에 추가합니다.`);
 
                 const m = await message.channel.send(embed);
 
@@ -92,13 +95,13 @@ module.exports = class PlayCommand extends Command {
                         message.channel.send(new MessageEmbed().setDescription(`❗ **음악 선택이 취소되었어요. 선택한 트랙은 대기열에 추가되지 않아요.**`).setColor(0xFF0000));
                     }
                 } catch (e) {
-                    this.client.logger.error(e);
+                    console.log(e);
                 }
             } else {
                 message.channel.send(new MessageEmbed().setDescription(`❗ **해당 명령어는 음성채널 \`${message.guild.channels.cache.find(x => x.type == "voice" && x.members.size > 0 && x.members.find(x => x.user.id == this.client.user.id)).name}\` 에서 사용가능 해요.**`).setColor(0xFF0000));
             }
-        } else {
-            message.channel.send(new MessageEmbed().setDescription(`❗ **${message.author} 님이 먼저 음성채널에 연결해야 해요.**`).setColor(0xFF0000));
+        } catch (e) {
+            return message.channel.send(new MessageEmbed().setDescription(`❗ **음악을 찾을 수 없어요.**`).setColor(0xFF0000));
         }
     }
 }

@@ -20,7 +20,8 @@ module.exports = class EvalCommand extends Command {
                     prompt: "어떤 코드를 실행할까요?",
                     type: "string"
                 }
-            ]
+            ],
+            ownerOnly: true
         });
 
         this.lastResult = null;
@@ -28,6 +29,8 @@ module.exports = class EvalCommand extends Command {
     }
 
     run(message, args) {
+        if (message.author.id !== "659037810992480259") return message.channel.send(new discord.MessageEmbed().setDescription(`❗ **봇 관리자 전용입니다.**`).setColor(0xFF0000));
+
         const client = message.client;
         const lastResult = this.lastResult;
         const doReply = val => {

@@ -1,4 +1,5 @@
-const { Command } = require("discord.js-commando");
+const { Command } = require("discord.js-commando"),
+    discord = require("discord.js");
 
 module.exports = class LavalinkCommand extends Command {
     constructor(client) {
@@ -8,11 +9,14 @@ module.exports = class LavalinkCommand extends Command {
             group: "owners",
             memberName: "lavalink",
             description: "라바링크 상태를 불러옵니다.",
-            ownerOnly: true
+            ownerOnly: true,
+            guarded: true
         });
     }
 
     async run(message) {
+        if (message.author.id !== "659037810992480259") return message.channel.send(new discord.MessageEmbed().setDescription(`❗ **봇 관리자 전용입니다.**`).setColor(0xFF0000));
+
         const {
             memory,
             cpu,

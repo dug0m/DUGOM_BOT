@@ -18,8 +18,8 @@ client.registry
     .registerGroups([
         ["general", "기본 명령어"],
         ["music", "음악 명령어"],
-        ["information", "정보 명령어"],
         ["game", "게임 명령어"],
+        ["other", "기타 명령어"],
         ["owners", "봇 관리자 명령어"]
     ])
     .registerDefaultGroups()
